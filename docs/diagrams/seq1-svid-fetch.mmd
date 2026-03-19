@@ -1,0 +1,11 @@
+sequenceDiagram
+    autonumber
+    participant S as Service
+    participant A as Agent
+    participant SV as SPIRE Server
+
+    S->>A: Fetch SVID
+    A->>SV: Request SVID
+    Note right of SV: Attest, match, sign
+    SV->>A: Return SVID
+    A->>S: Return SVID

@@ -1,0 +1,17 @@
+# SPIRE Helm values for demo (KIND cluster)
+# Use with: helm upgrade --install -n spire spire spire --repo https://spiffe.github.io/helm-charts-hardened/ -f config/spire-values.yaml
+
+global:
+  openshift: false
+  spire:
+    recommendations:
+      enabled: true
+    namespaces:
+      create: true
+    ingressControllerType: ""
+    clusterName: spire-demo
+    trustDomain: example.org
+    caSubject:
+      country: ARPA
+      organization: Example
+      commonName: example.org

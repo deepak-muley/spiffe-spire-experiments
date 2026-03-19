@@ -1,0 +1,7 @@
+sequenceDiagram
+    participant A as ServiceA
+    participant B as ServiceB
+
+    Note over A,B: Validate via federated bundle
+    A->>B: mTLS request
+    B->>A: mTLS response

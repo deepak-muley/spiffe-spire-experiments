@@ -1,0 +1,14 @@
+flowchart LR
+    subgraph AWS[AWS]
+        S1[Server]
+        A1[Agents]
+        S1 --> A1
+    end
+
+    subgraph GCP[GCP]
+        S2[Server]
+        A2[Agents]
+        S2 --> A2
+    end
+
+    S1 <-->|Federation| S2

@@ -1,0 +1,54 @@
+# Sample workload that fetches SVID from SPIRE Agent
+# Uses hostPath to mount the agent socket.
+# Helm charts (spiffe.github.io/helm-charts-hardened) use /run/spire/agent-sockets
+# with socket at spire-agent.sock (or symlinks: socket, api.sock)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+  labels:
+    app: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: client
+          image: ghcr.io/spiffe/spire-agent:1.5.1
+          command: ["/opt/spire/bin/spire-agent"]
+          args:
+            - "api"
+            - "watch"
+            - "-socketPath"
+            - "/run/spire/agent-sockets/spire-agent.sock"
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/agent-sockets
+              readOnly: true
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/agent-sockets
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+  labels:
+    app: client
+spec:
+  selector:
+    app: client
+  ports:
+    - port: 80
+      targetPort: 8080

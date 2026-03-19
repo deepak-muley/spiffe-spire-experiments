@@ -1,0 +1,10 @@
+sequenceDiagram
+    autonumber
+    participant S1 as Service1
+    participant S2 as Service2
+
+    Note over S1,S2: Both have SVIDs
+    S1->>S2: mTLS request
+    Note right of S2: Validate SVID
+    S2->>S1: mTLS response
+    Note left of S1: Validate SVID
